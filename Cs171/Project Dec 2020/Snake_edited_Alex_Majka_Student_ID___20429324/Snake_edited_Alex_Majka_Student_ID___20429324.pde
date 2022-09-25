@@ -1,0 +1,316 @@
+//BY Ian151 (ChromeWing)
+//EDITED AND ALTERED BY ALEX MAJKA
+
+
+int angle=0;
+int snakesize=5;
+int time=0;
+int[] headx= new int[2500];
+int[] heady= new int[2500];
+int applex=(round(random(47))+1)*8;
+int appley=(round(random(47))+1)*8;
+
+int greenapplex=(round(random(47))+1)*8;
+int greenappley=(round(random(47))+1)*8;
+
+int turqapplex=(round(random(47))+1)*8;
+int turqappley=(round(random(47))+1)*8;
+
+int blueapplex=(round(random(47))+1)*8;
+int blueappley=(round(random(47))+1)*8;
+
+int score = 5;
+
+
+
+
+
+boolean redo=true;
+boolean stopgame=false;
+void setup()
+{
+  restart();
+  size(400,400);
+  textAlign(CENTER);
+}
+void draw()
+{
+  if (stopgame)
+  {
+
+  }
+  else
+  {
+  time+=1;
+  fill(255,0,0);
+  stroke(0);
+  rect(applex,appley,8,8);
+  fill(0);
+  stroke(0);
+  rect(0,0,width,8);
+  rect(0,height-8,width,8);
+  rect(0,0,8,height);
+  rect(width-8,0,8,height);
+  
+  fill(0,255,0);//adding my own code for the extra 3 apples
+  stroke(0);
+  rect(greenapplex,greenappley,8,8);
+  
+  fill(0,0,255);//adding my own code for the extra 3 apples
+  stroke(0);
+  rect(blueapplex,blueappley,8,8);
+  
+  fill(64,224,208);//adding my own code for the extra 3 apples
+  stroke(0);
+  rect(turqapplex,turqappley,8,8);
+
+  
+  
+  
+  
+  if ((time % 5)==0)
+  {
+    travel();
+    display();
+    checkdead();
+  }
+  }
+}
+//controls:
+void keyPressed()
+{
+  if (key == CODED)
+  {
+    if (keyCode == UP && angle!=270 && (heady[1]-8)!=heady[2])
+    {
+      angle=90;
+    }
+    if (keyCode == DOWN && angle!=90 && (heady[1]+8)!=heady[2])
+    {
+      angle=270;
+    }if (keyCode == LEFT && angle!=0 && (headx[1]-8)!=headx[2])
+    {
+      angle=180;
+    }if (keyCode == RIGHT && angle!=180 && (headx[1]+8)!=headx[2])
+    {
+      angle=0;
+    }
+    if (keyCode == SHIFT)
+    {
+      restart();
+    }
+  }
+}
+void travel()
+{
+  for(int i=snakesize;i>0;i--)
+  {
+    if (i!=1)
+    {
+
+      headx[i]=headx[i-1];
+      heady[i]=heady[i-1];
+    }
+    else
+    {
+      switch(angle)
+      {
+        case 0:
+        headx[1]+=8;
+        break;
+        case 90:
+        heady[1]-=8;
+        break;
+        case 180:
+        headx[1]-=8;
+        break;
+        case 270:
+        heady[1]+=8;
+        break;
+      }
+    }
+  }
+  
+}
+void display()
+{
+  
+  
+  if (headx[1]==applex && heady[1]==appley)//original code for the apple
+  {
+    score = score + 1;
+    snakesize+=+1;
+    redo=true;
+    while(redo)
+    {
+      applex=(round(random(47))+1)*8;
+      appley=(round(random(47))+1)*8;
+      for(int i=1;i<snakesize;i++)
+      {
+        
+        if (applex==headx[i] && appley==heady[i])
+        {
+          redo=true;
+        }
+        else
+        {
+          redo=false;
+          i=1000;
+        }
+      }
+    }
+  }
+  stroke(sinecolor(1),sinecolor(0),sinecolor(.5));
+  fill(0);
+  rect(headx[1],heady[1],8,8);
+  fill(255);
+  rect(headx[snakesize],heady[snakesize],8,8);
+  
+  
+
+  if (headx[1]==greenapplex && heady[1]==greenappley)//first additional apple
+  {
+    score = score + 3;//adds a score of 3 to the existing score
+    snakesize+=+3;//adds 3 squares of size to the snake
+    redo=true;
+    while(redo)
+    {
+      greenapplex=(round(random(47))+1)*8;
+      greenappley=(round(random(47))+1)*8;
+      for(int i=1;i<snakesize;i++)
+      {
+        
+        if (greenapplex==headx[i] && greenappley==heady[i])
+        {
+          redo=true;
+        }
+        else
+        {
+          redo=false;
+          i=1000;
+        }
+      }
+    }
+  }
+  stroke(sinecolor(1),sinecolor(0),sinecolor(.5));
+  fill(0);
+  rect(headx[1],heady[1],8,8);
+  fill(255);
+  rect(headx[snakesize],heady[snakesize],8,8);
+  
+  
+  if (headx[1]==blueapplex && heady[1]==blueappley)//second additional apple
+  {
+    score = score + 0;//adds no score to the existing score
+    snakesize+=-1;//takes away 1 square from the length of the snake
+    redo=true;
+    while(redo)
+    {
+      blueapplex=(round(random(47))+1)*8;
+      blueappley=(round(random(47))+1)*8;
+      for(int i=1;i<snakesize;i++)
+      {
+        
+        if (blueapplex==headx[i] && blueappley==heady[i])
+        {
+          redo=true;
+        }
+        else
+        {
+          redo=false;
+          i=1000;
+        }
+      }
+    }
+  }
+  stroke(sinecolor(1),sinecolor(0),sinecolor(.5));
+  fill(0);
+  rect(headx[1],heady[1],8,8);
+  fill(255);
+  rect(headx[snakesize],heady[snakesize],8,8);
+  
+  
+  
+  if (headx[1]==turqapplex && heady[1]==turqappley)//third additional apple
+  {
+    score = score + 0;//adds no score to the snake
+    snakesize = 5;//restores the snake's length to it's original size.
+    redo=true;
+    while(redo)
+    {
+      turqapplex=(round(random(47))+1)*8;
+      turqappley=(round(random(47))+1)*8;
+      for(int i=1;i<snakesize;i++)
+      {
+        
+        if (turqapplex==headx[i] && turqappley==heady[i])
+        {
+          redo=true;
+        }
+        else
+        {
+          redo=false;
+          i=1000;
+        }
+      }
+    }
+  }
+  stroke(sinecolor(1),sinecolor(0),sinecolor(.5));
+  fill(0);
+  rect(headx[1],heady[1],8,8);
+  fill(255);
+  rect(headx[snakesize],heady[snakesize],8,8);
+  
+  
+  
+  
+}
+void checkdead()
+{
+  for(int i=2;i<=snakesize;i++)
+  {
+    if (headx[1]==headx[i] && heady[1]==heady[i])
+    {
+      fill(255);
+      rect(125,125,160,100);
+      fill(0);
+      text("GAME OVER",200,150);
+      text("Score:  "+str(snakesize-1)+" units long",200,175);
+      text("To restart, press Shift.",200,200);
+      stopgame=true;
+    }
+    if (headx[1]>=(width-8) || heady[1]>=(height-8) || headx[1]<=0 || heady[1]<=0)
+    {
+      fill(255);
+      rect(125,125,160,100);
+      fill(0);
+      text("GAME OVER",200,150);
+      text("Score:  "+score+" units long",200,175);//prints the score instead of the  length of the snake
+      text("To restart, press Shift.",200,200);
+      stopgame=true;
+    }
+  }
+}
+void restart()
+{
+  background(255);
+  headx[1]=200;
+  heady[1]=200;
+  for(int i=2;i<1000;i++)
+  {
+    headx[i]=0;
+    heady[i]=0;
+  }
+  stopgame=false;
+  applex=(round(random(47))+1)*8;
+  appley=(round(random(47))+1)*8;
+  snakesize=5;
+  time=0;
+  angle=0;
+  redo=true;
+}
+float sinecolor(float percent)
+{
+  float slime=(sin(radians((((time +(255*percent)) % 255)/255)*360)))*255;
+  return slime;
+}
